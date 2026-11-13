@@ -1,6 +1,5 @@
 import React from 'react';
-import { TaskType } from '../domain/Task';
-import { NodeSnapshot } from '../engine/SimulationEngine';
+import { NodeSnapshot, TaskType } from '../domain/Snapshots';
 
 interface NodeClusterPanelProps {
   nodes: NodeSnapshot[];

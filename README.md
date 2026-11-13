@@ -26,7 +26,29 @@ A deterministic, high-performance Cloud Resource Allocation Simulator and Strate
 
 ---
 
-## 🛠️ Tech Stack
+## 🏛️ Project Structure
+
+```
+CloudResourceAllocation/
+├── core-engine/                # Native C++17 Object-Oriented Simulation Engine
+│   ├── include/                # OOP Domain Blueprints (.hpp)
+│   │   ├── Resource.hpp        # Abstract Resource base & hardware subclasses
+│   │   ├── Task.hpp            # Abstract Task base & Batch/Interactive/Priority subclasses
+│   │   ├── ComputeNode.hpp     # Abstract ComputeNode & Physical/VM subclasses
+│   │   ├── SchedulingStrategy.hpp # Strategy Pattern & 4 algorithm implementations
+│   │   ├── ResourceManager.hpp # Cluster aggregation & clock tick manager
+│   │   └── StrategyEvaluator.hpp # Multi-objective evaluation & scoring pipeline
+│   ├── src/
+│   │   ├── main.cpp            # Standalone CLI benchmark entry point
+│   │   └── wasm_bindings.cpp   # Emscripten Embind WebAssembly interface
+│   └── CMakeLists.txt          # CMake build configuration
+├── src/                        # Web Dashboard (React 19, TypeScript, Tailwind CSS)
+│   ├── components/             # Minimal UI components (Compare view, Playback, Panels)
+│   ├── wasm/                   # Compiled WebAssembly binary & JS glue
+│   └── wasmBridge.ts           # Asynchronous WebAssembly bridge
+├── datasets/                   # 1,000+ task evaluation CSV datasets
+└── PROJECT_DIVISION.md         # Team roles, file ownership & OOP viva notes
+```
 
 - **Frontend**: React 19, TypeScript, Tailwind CSS v4, Lucide Icons
 - **Bundler & Tooling**: Vite, Vitest

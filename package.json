@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "test": "vitest run"
+    "test": "vitest run",
+    "build:wasm": "em++ -std=c++17 -O3 -Icore-engine/include --bind core-engine/src/wasm_bindings.cpp -s WASM=1 -s MODULARIZE=1 -s EXPORT_ES6=1 -s EXPORT_NAME=createStratosModule -s ALLOW_MEMORY_GROWTH=1 -o src/wasm/stratos_engine.js"
   },
   "dependencies": {
     "lucide-react": "^0.511.0",

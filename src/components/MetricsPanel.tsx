@@ -1,5 +1,5 @@
 import React from 'react';
-import { MetricDataPoint } from '../engine/MetricsCollector';
+import { MetricDataPoint } from '../wasmBridge';
 
 interface MetricsPanelProps {
   latest: MetricDataPoint;

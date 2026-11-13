@@ -1,5 +1,13 @@
-import { TaskType } from '../domain/Task';
-import { TaskSpec } from './StrategyEvaluator';
+import { TaskType } from '../domain/Snapshots';
+
+export interface TaskSpec {
+  id: string;
+  type: TaskType;
+  requiredCpu: number;
+  requiredMemory: number;
+  executionTime: number;
+  arrivalTime: number;
+}
 
 export interface CsvParseResult {
   tasks: TaskSpec[];
@@ -20,11 +28,6 @@ function normalizeTaskType(raw: string): TaskType | null {
   return null;
 }
 
-/**
- * Parses a CSV string of tasks.
- * Expected columns: id, type, requiredCpu, requiredMemory, executionTime, arrivalTime
- * (Header row is optional; flexible column names like cpu, memory, duration, arrival are supported.)
- */
 export function parseTasksCsv(csvText: string): CsvParseResult {
   const lines = csvText
     .split(/\r?\n/)
@@ -38,7 +41,6 @@ export function parseTasksCsv(csvText: string): CsvParseResult {
   const tasks: TaskSpec[] = [];
   const warnings: string[] = [];
 
-  // Detect header row
   const firstCols = lines[0].split(',').map((c) => c.trim().toLowerCase());
   const hasHeader =
     firstCols.some((c) => c.includes('cpu') || c.includes('type') || c.includes('arrival'));
@@ -99,7 +101,7 @@ export function parseTasksCsv(csvText: string): CsvParseResult {
       arrivalTime < 0
     ) {
       if (warnings.length < 10) {
-        warnings.push(`Row ${i + 1} (${id}): invalid numeric resource/timing values.`);
+        warnings.push(`Row ${i + 1} (${id}): invalid numeric values.`);
       }
       continue;
     }
@@ -117,9 +119,6 @@ export function parseTasksCsv(csvText: string): CsvParseResult {
   return { tasks, warnings };
 }
 
-/**
- * Generates a realistic large CSV dataset for benchmarking.
- */
 export function generateSampleTasksCsv(count = 500): string {
   const rows: string[] = [
     'id,type,requiredCpu,requiredMemory,executionTime,arrivalTime',
@@ -131,19 +130,16 @@ export function generateSampleTasksCsv(count = 500): string {
     const arrivalTick = Math.floor((i - 1) / 3);
 
     if (roll < 35) {
-      // Batch
       const cpu = 2 + (i % 5);
       const mem = 6 + ((i * 3) % 15);
       const exec = 4 + (i % 7);
       rows.push(`${id},Batch,${cpu},${mem},${exec},${arrivalTick}`);
     } else if (roll < 72) {
-      // Interactive
       const cpu = 1 + (i % 4);
       const mem = 3 + ((i * 2) % 10);
       const exec = 2 + (i % 5);
       rows.push(`${id},Interactive,${cpu},${mem},${exec},${arrivalTick}`);
     } else {
-      // Priority
       const cpu = 2 + (i % 4);
       const mem = 4 + ((i * 2) % 11);
       const exec = 2 + (i % 4);

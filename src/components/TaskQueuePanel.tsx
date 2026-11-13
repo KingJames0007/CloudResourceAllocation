@@ -1,6 +1,5 @@
 import React from 'react';
-import { TaskType } from '../domain/Task';
-import { TaskSnapshot } from '../engine/SimulationEngine';
+import { TaskSnapshot, TaskType } from '../domain/Snapshots';
 
 interface TaskQueuePanelProps {
   tasks: TaskSnapshot[];
